@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -28,6 +30,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //根据用户名查询用户信息
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new LoginUser(user);
+
+        // String role = user.getRole();
+        //TODO: finish Role-Based Access Control later
+        return new LoginUser(user, new ArrayList<>(Collections.singleton(user.getRole())));
     }
 }
